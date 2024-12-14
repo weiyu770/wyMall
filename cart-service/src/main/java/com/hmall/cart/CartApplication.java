@@ -5,9 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import com.hamll.api.client.ItemClient;
+import com.hmall.api.client.ItemClient;
 
-import com.hamll.api.config.DefaultFeignConfig;
+import com.hmall.api.config.DefaultFeignConfig;
 
 @MapperScan("com.hmall.cart.mapper")
 @SpringBootApplication
