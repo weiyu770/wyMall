@@ -10,8 +10,8 @@ import org.apache.ibatis.annotations.Update;
  * 订单详情表 Mapper 接口
  * </p>
  *
- * @author 虎哥
- * @since 2023-05-05
+ * @author yu_wei
+ * @since 2024-10-14
  */
 public interface CartMapper extends BaseMapper<Cart> {
 
