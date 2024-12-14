@@ -1,20 +1,20 @@
-package com.hmall.cart;
+package com.hmall.trade;
 
+import com.hamll.api.client.CartClient;
+import com.hamll.api.client.ItemClient;
+import com.hamll.api.config.DefaultFeignConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import com.hamll.api.client.ItemClient;
 
-import com.hamll.api.config.DefaultFeignConfig;
-
-@MapperScan("com.hmall.cart.mapper")
+@MapperScan("com.hmall.trade.mapper")
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(clients = {ItemClient.class}, defaultConfiguration = DefaultFeignConfig.class)
-public class CartApplication {
+@EnableFeignClients(clients = {CartClient.class, ItemClient.class}, defaultConfiguration = DefaultFeignConfig.class)
+public class TradeApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CartApplication.class, args);
+        SpringApplication.run(TradeApplication.class, args);
     }
 }
