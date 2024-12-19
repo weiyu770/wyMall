@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hmall.api.client.ItemClient;
 import com.hmall.api.dto.ItemDTO;
+import com.hmall.cart.config.CartProperties;
 import com.hmall.cart.domain.dto.CartFormDTO;
 import com.hmall.cart.domain.po.Cart;
 import com.hmall.cart.domain.vo.CartVO;
@@ -17,6 +18,7 @@ import com.hmall.common.utils.BeanUtils;
 import com.hmall.common.utils.CollUtils;
 import com.hmall.common.utils.UserContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -42,6 +44,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements ICartService {
     
     //    private final IItemService itemService;
@@ -49,6 +52,8 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
     private final DiscoveryClient discoveryClient;
     
     private final RestTemplate restTemplate;
+    
+    private final CartProperties cartProperties;
     
 
 //    private  final ItemClient itemClient;
@@ -79,14 +84,25 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
         save(cart);
     }
     
+    
+    private void checkCartsFull(Long userId) {
+        int count = lambdaQuery().eq(Cart::getUserId, userId).count();
+        //        if (count >= 10) {
+        //            throw new BizIllegalException(StrUtil.format("用户购物车课程不能超过{}", 10));
+        //        }
+        if(count >= cartProperties.getMaxItems()) {
+            throw new BizIllegalException(StrUtil.format("用户购物车课程不能超过{}", cartProperties.getMaxItems()));
+        }
+    }
+    
     @Override
     public List<CartVO> queryMyCarts() {
         // 1.查询我的购物车列表
         List<Cart> carts = lambdaQuery().eq(
                 Cart::getUserId,
-                //                UserContext.getUser()
-                1L
+                                UserContext.getUser()
         ).list();
+        log.info("当前User ：{}", UserContext.getUser());
         if (CollUtils.isEmpty(carts)) {
             return CollUtils.emptyList();
         }
@@ -207,21 +223,6 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
 
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     @Override
     public void removeByItemIds(Collection<Long> itemIds) {
         // 1.构建删除条件，userId和itemId
@@ -232,13 +233,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
         // 2.删除
         remove(queryWrapper);
     }
-    
-    private void checkCartsFull(Long userId) {
-        int count = lambdaQuery().eq(Cart::getUserId, userId).count();
-        if (count >= 10) {
-            throw new BizIllegalException(StrUtil.format("用户购物车课程不能超过{}", 10));
-        }
-    }
+
     
     private boolean checkItemExists(Long itemId, Long userId) {
         int count = lambdaQuery()

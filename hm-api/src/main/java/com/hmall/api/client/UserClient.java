@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(name = "user-service", path = "/users")  // 声明FeignClient的名称和路径，与UserController中的@RequestMapping("/user")路径保持一致
 public interface UserClient {
+    
+    /**
+     * 扣减余额
+     * @param pw
+     * @param amount
+     */
     @PutMapping("/money/deduct")
     void deductMoney(@RequestParam("pw") String pw, @RequestParam("amount") Integer amount);
 }

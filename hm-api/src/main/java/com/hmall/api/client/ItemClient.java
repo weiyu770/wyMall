@@ -20,6 +20,13 @@ import java.util.List;
  */
 @FeignClient("item-service")
 public interface ItemClient {
+    
+    
+    /**
+     * 查询商品
+     * @param ids
+     * @return
+     */
     @GetMapping("/items")
     List<ItemDTO> queryItemsByIds(@RequestParam("ids") Collection<Long> ids);
     
@@ -38,7 +45,7 @@ public interface ItemClient {
      * @return
      */
     @GetMapping
-     List<ItemDTO> queryItemByIds(@RequestParam("ids") Collection<Long> ids);
+    List<ItemDTO> queryItemByIds(@RequestParam("ids") Collection<Long> ids);
     
     
 }

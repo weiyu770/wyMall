@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("/carts")
 @RequiredArgsConstructor
 public class CartController {
+    private static final Logger log = LoggerFactory.getLogger(CartController.class);
     private final ICartService cartService;
 
     @ApiOperation("添加商品到购物车")
@@ -45,6 +48,15 @@ public class CartController {
     public List<CartVO> queryMyCarts(){
         return cartService.queryMyCarts();
     }
+    
+//    @ApiOperation("查询购物车列表")
+//    @GetMapping
+//    public List<CartVO> queryMyCarts(@RequestHeader(value = "user-info", required = false) String userInfo){
+//        log.info("user-info: {}", userInfo);
+//        return cartService.queryMyCarts();
+//    }
+    
+    
     @ApiOperation("批量删除购物车中商品")
     @ApiImplicitParam(name = "ids", value = "购物车条目id集合")
     @DeleteMapping

@@ -42,6 +42,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 //    private final ICartService cartService; 改为Client
     private final CartClient cartClient; ;
 
+    
+    /**
+     * 创建订单
+     *
+     * @param orderFormDTO
+     * @return
+     */
     @Override
     @Transactional
     public Long createOrder(OrderFormDTO orderFormDTO) {
@@ -70,7 +77,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setStatus(1);
         // 1.6.将Order写入数据库order表中
         save(order);
-
         // 2.保存订单详情
         List<OrderDetail> details = buildDetails(order.getId(), items, itemNumMap);
         detailService.saveBatch(details);

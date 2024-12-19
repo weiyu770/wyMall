@@ -1,0 +1,18 @@
+# bootstrap.yaml
+spring:
+  application:
+    name: cart-service
+  profiles:
+    active: local
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 8.134.206.148:8848
+      config:
+        server-addr: 8.134.206.148:8848
+        refreshable: true
+        file-extension: yaml
+        shared-configs:
+          - dataId: shared-jdbc.yaml
+          - dataId: shared-log.yaml
+          - dataId: shared-swagger.yaml

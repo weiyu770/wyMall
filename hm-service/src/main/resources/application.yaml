@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9090
 spring:
   application:
     name: hm-service
@@ -22,8 +22,7 @@ logging:
     com.hmall: debug
   pattern:
     dateformat: HH:mm:ss:SSS
-  file:
-    path: "logs/${spring.application.name}"
+
 knife4j:
   enable: true
   openapi:
@@ -51,4 +50,3 @@ hm:
       - /users/login
       - /items/**
       - /hi
-# keytool -genkeypair -alias hmall -keyalg RSA -keypass hmall123 -keystore hmall.jks -storepass hmall123

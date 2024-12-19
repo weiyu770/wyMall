@@ -16,9 +16,9 @@ import java.util.Collection;
 public interface CartClient {
     
     /**
-     * 批量删除购物车条目
+     * 批量删除购物车里的商品
      * @param ids
      */
     @DeleteMapping("/carts")
-    void deleteCartItemByIds(@RequestParam("ids") Collection<Long> ids);
+    void  deleteCartItemByIds(@RequestParam("ids") Collection<Long> ids);
 }
